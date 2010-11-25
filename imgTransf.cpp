@@ -45,7 +45,7 @@
 			frame = cvLoadImage(filename,CV_LOAD_IMAGE_COLOR );
 			input = processInput(frame,output,grayImage,crop);
 			//cvShowImage("Frame",grayImage);
-			while(char c = cvWaitKey(33)!= ESC );
+		//	while(char c = cvWaitKey(33)!= ESC );
 			cvReleaseImage(&crop);
 			cvReleaseImage(&output);
 			cvReleaseImage(&grayImage);

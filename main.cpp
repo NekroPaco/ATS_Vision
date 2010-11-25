@@ -22,7 +22,7 @@
 #include "fileops.h"
 #include "globalvals.h"
 #include "imgTransf.h"
-#include "neuralnet.h"trainInputs
+#include "neuralnet.h"
 
 
 int main(int argc, char** argv){
@@ -33,6 +33,8 @@ int main(int argc, char** argv){
 	 CvMat* validationInput;
 	 CvMat* trainingMatrix =  cvCreateMat(TRAIN_INPUTS,INPUT_SIZE,CV_32FC1); //  matrix that stores ANN inputs
 	 CvMat* trainingOutputs = cvCreateMat(TRAIN_INPUTS,2,CV_32FC1); //  matrix that stores ANN outputs. first coumn = plastic, 2nd Column = glass
+	 CvMat* validationMatrix =  cvCreateMat(VALIDATION_INPUTS,INPUT_SIZE,CV_32FC1); //  matrix that stores ANN inputs
+	 CvMat* validationOutputs = cvCreateMat(VALIDATION_INPUTS,2,CV_32FC1); //  matrix that stores ANN outputs. first coumn = plastic, 2nd Column = glass
 
 	 printf ("ATS Vision test \n");
 			printf("Will process input from Image or video containing a water or glass container bottom and determine which material is it\n");
@@ -50,7 +52,7 @@ int main(int argc, char** argv){
 			 			setRandomSample(trainingSet);
 			 			char filename[strlen(trainingSet->sampleName)+1];
 			 			strcpy(filename,trainingSet->sampleName);
-			 			printf("%s %d \n",filenamtrainingInpute,j);
+			 			printf("%s %d \n",filename,j);
 			 			if (trainingInput = processInputFromImage(filename)){ // sees if an array of extractions values was obtained , if not skip to next image.
 							setInputRow(trainingMatrix,trainingInput,j);
 							setOutputRow(trainingOutputs,j,trainingSet->material);
@@ -60,35 +62,43 @@ int main(int argc, char** argv){
 			 		}
 			 		printf("Creating new validation data... \n ");
 			 		j =0;
+
+			 		// Set validation inputs and outputs.
 			 		while(j<VALIDATION_INPUTS){
 			 			typeOfSet(validationSet,validation);
-						if(j<VALIDATION_INPUTS/2)
+						if(j<(VALIDATION_INPUTS/2))
 							typeOfMaterial(validationSet,glass);
-						else typeOfMaterial(validationSet,plastic);
-						printf("%s \n",validationSet->dir);
-			 			setRandomSample(validationSet);
+						else{ typeOfMaterial(validationSet,plastic);}
+							printf("%s \n",validationSet->dir);
+							setRandomSample(validationSet);
 			 			char filename[strlen(validationSet->sampleName)+1];
-			 			strcpy(filename,trainingSet->sampleName);
-			 			printf("%s %d \n",filename,j);
-			 			if (trainingInput = processInputFromImage(filename)){ // sees if an array of extractions values was obtained , if not skip to next image.
-			 				setInputRow(trainingMatrix,trainingInput,j);
-			 				setOutputRow(trainingOutputs,j,trainingSet->material);
+			 			strcpy(filename,validationSet->sampleName);
+			 			printf("%s %d \n",filename,j); //  prints out filename and index.
+			 			if (validationInput = processInputFromImage(filename)){ // sees if an array of extractions values was obtained , if not skip to next image.
+			 				setInputRow(validationMatrix,validationInput,j);
+			 				setOutputRow(validationOutputs,j,validationSet->material);
 			 				j++;}
-			 			cvReleaseMat(&validationInput);
 			 					 		// get number of elements of training face or validation face
 			 					 		}
 			 		saveInputAndOutput(trainingMatrix,trainingOutputs,"trainInputs.xml","trainOutputs.xml" );
+			 		saveInputAndOutput(validationMatrix,validationOutputs,"valInputs.xml","valOutputs.xml" );
 			 		printf("new data saved succesfully :)\n");
-			 		cvReleaseMat(&trainingMatrix); // Release memory
-			 		cvReleaseMat(&trainingOutputs);
+			 		cvReleaseMat(&validationInput);
+			 		cvReleaseMat(&validationMatrix); // Release memory
+			 		cvReleaseMat(&validationOutputs);
 			 	}
 			 else if (!(strcmp(argv[1],"-Load"))){
-				 printf("Loading training input data...\n");
+				 printf("Loading input data...\n");
+				 printf("Loading training data...\n");
 				 loadInputAndOutput(trainingMatrix,trainingOutputs,"trainInputs.xml","trainOutputs.xml");
-				 printf("Loading training output data...\n");
+				 printf("Loading validation data");
+				 loadInputAndOutput(validationMatrix,validationOutputs,"valInputs.xml","valOutputs.xml");
 				 printf("Training and validation data loaded successfully !!!!!!! \n");
 			 	 cvReleaseMat(&trainingMatrix); // Release memory
 			 	 cvReleaseMat(&trainingOutputs);
+			 	 cvReleaseMat(&validationMatrix); // Release memory
+			 	 cvReleaseMat(&validationOutputs);
+
 			 }
 			 		// get Image from filename
 			 	else if(!strcmp(argv[1],"camera")) {
@@ -96,7 +106,7 @@ int main(int argc, char** argv){
 			 		cvReleaseCapture(&capture);
 			 	}
 					 delete trainingSet;
-					 delete validationSet
+					 delete validationSet;
 	return 0;
 }
 

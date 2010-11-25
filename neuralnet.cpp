@@ -123,7 +123,7 @@ void loadInputAndOutput(CvMat* input,CvMat* output,char* filenameInput,char* fil
 	}
 
 
-/*
+
 	static
 	int build_mlp_classifier( char* data_filename,
 	   char* filename_to_save, char* filename_to_load )
@@ -200,9 +200,9 @@ void loadInputAndOutput(CvMat* input,CvMat* output,char* filenameInput,char* fil
 	            CvANN_MLP_TrainParams(cvTermCriteria(CV_TERMCRIT_ITER,300,0.01),
 	//#if 1
 	            CvANN_MLP_TrainParams::BACKPROP,0.001));
-	/*#else
-	            CvANN_MLP_TrainParams::RPROP,0.05));
-	#endif
+	//#else
+	            //CvANN_MLP_TrainParams::RPROP,0.05));
+//	#endif
 	        cvReleaseMat( &new_responses );
 	        printf("\n");
 	    }
@@ -241,7 +241,7 @@ void loadInputAndOutput(CvMat* input,CvMat* output,char* filenameInput,char* fil
 	    cvReleaseMat( &data );
 	    cvReleaseMat( &responses );
 
-	    return 0;}*/
+	    return 0;}
 
 	/*
 	 * CvMat* GetImageData

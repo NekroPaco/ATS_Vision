@@ -51,8 +51,8 @@
 /*Definition of the */
 #define IS_GLASS 0
 #define IS_PLAST 1
-#define TRAIN_INPUTS 100 // Number of rows for training Matrix, chang to 1000
-#define VERIFYINPUTS 50
+#define TRAIN_INPUTS 50 // Number of rows for training Matrix, chang to 1000
+#define VERIFYINPUTS 20
 #define VALIDATION_INPUTS 20
 
 /*

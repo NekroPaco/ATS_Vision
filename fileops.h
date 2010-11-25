@@ -31,7 +31,7 @@
 #define TRAINING  IMAGE "training/"
 #define TGLASS TRAINING "glass/"
 #define TPLAST TRAINING "plast/"
-#define VALIDATION IMAGE "validation"
+#define VALIDATION IMAGE "validation/"
 #define VGLASS VALIDATION "glass/"
 #define VPLAST VALIDATION "plast/"
 
